@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import "./Cart.css";
 
 import { checkout } from "../../ducks/product";
+import { Link } from 'react-router-dom';
 
 import CartItem from "./CartItem/CartItem";
 
@@ -17,20 +18,24 @@ export function Cart( { checkout, history, productsInCart } ) {
 		/>
 	) );
 	const cartTotal = productsInCart.reduce( ( total, { price } ) => total + price, 0 );
+	function checkoutAndRedirect() {
+		checkout();
+		history.push("/thank-you");
+	}
 	return (
 		<div className="cart">
 			<h1>Cart</h1>
 			{
 				products.length === 0
 					?
-						<h3>Nothing in cart! Go buy something!</h3>
+						<h3>Nothing in cart! Go <Link to='/shop'>buy</Link> something!</h3>
 					:
 						<main>
 							{ products }
 							<div className="cart__total">
 								${ cartTotal }
 							</div>
-							<button className="cart__checkout">Checkout</button>
+							<button className="cart__checkout" onClick={ checkoutAndRedirect }>Checkout</button>
 						</main>
 			}
 		</div>
